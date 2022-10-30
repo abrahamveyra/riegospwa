@@ -1,6 +1,6 @@
 //Detectar si podemos usar Service worker
 var url = window.location.href;
-var swLocation = '/riegopwa/sw.js';
+var swLocation = '/riegospwa/sw.js';
 
 if (navigator.serviceWorker) {
 
