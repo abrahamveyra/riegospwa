@@ -18,7 +18,6 @@ if (url.includes('localhost')) {
     'use strict';
   
     var ENTER_KEY = 13;
-    var newTodoDom = document.getElementById('miForm-suelo');
     var txtfecha = document.getElementById('txtfecha');
     var txtcultivo_revisado = document.getElementById('txtcultivo_revisado');
     var txtrancho_revisado = document.getElementById('txtrancho_revisado');
@@ -88,7 +87,6 @@ if (url.includes('localhost')) {
   
     // Show the current list of todos by reading them from the database
     function showTodos() {
-      $('#s-off').html("");
         db.allDocs({include_docs: true, ascending: true}, function(err, doc) {
             redrawTodosUI(doc.rows);
             console.log(doc.rows.length)
@@ -180,7 +178,7 @@ if (url.includes('localhost')) {
   
     function redrawTodosUI(todos) {
       let n_suelos = 1;
-      $(".table tbody").html(""); //limpia la tabla
+      
       todos.forEach(function(todo) {
         console.log(todo.doc.fecha)
         $("#tbodysuelo_off").append('<p style="background-color: orangered; text-align: center; color:white">'+
@@ -206,31 +204,29 @@ if (url.includes('localhost')) {
     }
 
     document.getElementById("savesuelo-off").addEventListener('click', () => {
-      addTodo(txtfecha.value, txtcultivo_revisado.value, txtrancho_revisado.value, txtmetodo_aplicacion.value, txtstatus_producto.value, txthumedad.value, txtpresion_riego_valvula.value, txtpresion_riego_cintilla_manguera.value, txthp_gotero.value, txtph_bomba.value, txtph_tierra.value, txtce_gotero.value, txtce_bomba.value, txtce_tierra.value, txtevapotranspiracion.value, txtcomentario.value);
-      txtfecha.value = '';
-      txtcultivo_revisado.value = '';
-      txtrancho_revisado.value = '';
-      txtmetodo_aplicacion.value = '';
-      txtstatus_producto.value = '';
-      txthumedad.value = '',
-      txtpresion_riego_valvula.value = '';
-      txtpresion_riego_cintilla_manguera.value = '';
-      txthp_gotero.value = '';
-      txtph_bomba.value = '';
-      txtph_tierra.value = '';
-      txtce_gotero.value = '',
-      txtce_bomba.value = '';
-      txtce_tierra.value = '';
-      txtevapotranspiracion.value = '';
-      txtcomentario.value = '';
+        addTodo(txtfecha.value, txtcultivo_revisado.value, txtrancho_revisado.value, txtmetodo_aplicacion.value, txtstatus_producto.value, txthumedad.value, txtpresion_riego_valvula.value, txtpresion_riego_cintilla_manguera.value, txthp_gotero.value, txtph_bomba.value, txtph_tierra.value, txtce_gotero.value, txtce_bomba.value, txtce_tierra.value, txtevapotranspiracion.value, txtcomentario.value);
+        txtfecha.value = '';
+        txtcultivo_revisado.value = '';
+        txtrancho_revisado.value = '';
+        txtmetodo_aplicacion.value = '';
+        txtstatus_producto.value = '';
+        txthumedad.value = '',
+        txtpresion_riego_valvula.value = '';
+        txtpresion_riego_cintilla_manguera.value = '';
+        txthp_gotero.value = '';
+        txtph_bomba.value = '';
+        txtph_tierra.value = '';
+        txtce_gotero.value = '',
+        txtce_bomba.value = '';
+        txtce_tierra.value = '';
+        txtevapotranspiracion.value = '';
+        txtcomentario.value = '';
+        $('#s-off').html("");
+        $(".table tbody").html(""); //limpia la tabla
     })
   
-    function addEventListeners() {
-      newTodoDom.addEventListener('keypress', newTodoKeyPressHandler, false);
-    }
-  
     
-    addEventListeners();
+    
     showTodos();
   
     if (remoteCouch) {
