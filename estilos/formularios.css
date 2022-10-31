@@ -307,3 +307,27 @@ i{
     from { width: 100% }
     to { width:0 }
 }
+
+.notification {
+  background-color: rgb(248, 89, 89);
+  color: white;
+  text-decoration: none;
+  padding: 15px 26px;
+  position: relative;
+  display: inline-block;
+  border-radius: 50px;
+}
+
+.notification:hover {
+  background: red;
+}
+
+.notification .badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 5px 10px;
+  border-radius: 90%;
+  background-color: red;
+  color: white;
+}

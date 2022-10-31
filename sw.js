@@ -55,7 +55,8 @@ self.addEventListener( 'install', e => {
             'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js',
             '//cdn.jsdelivr.net/npm/sweetalert2@11',
             'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js',
-            'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css'
+            'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css',
+            'https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js'
        ]);
 
     })
