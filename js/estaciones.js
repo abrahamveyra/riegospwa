@@ -1,4 +1,4 @@
-$(document).ready( () => obtenerestacion())
+
 
 let iduser3 = 0;
 var editar = false;
@@ -9,7 +9,7 @@ function obtenerestacion(){
     $(".table tbody").html(""); //limpia la tabla
 
     let i=0;
-fetch('https://api.gec.org.mx/api/riegos/getFormEstaciones')
+fetch('http://localhost:3001/api/riegos/getFormEstaciones')
 .then(resp => resp.json())
 .then(resp => {
     resp.forEach(element => {
@@ -29,7 +29,6 @@ fetch('https://api.gec.org.mx/api/riegos/getFormEstaciones')
         element.ce_dren+'</td><td style="background-color: green; text-align: center; color:white">'+
         element.variedad+'</td><td style="background-color: green; text-align: center; color:white">'+
         element.comentario_general+'</td><td style="background-color: green; text-align: center; color:white"><button class="eliminar-estaciones btn-danger" data-id="'+element.id_rhidro+'">Eliminar</button></td></tr>')
-        i=i+1;
     });
 })
     
@@ -43,7 +42,7 @@ $(document).on('click', '.editar', function () {
 
         function PintarUsuario(iduser3){
 
-$.get("https://api.gec.org.mx/api/riegos/getFormEstaciones" + iduser3)
+$.get("http://localhost:3001/api/riegos/getFormEstaciones" + iduser3)
 .done(function( response ) {
     
     $("#txtnombres").val(response.Name),
@@ -72,7 +71,7 @@ $.get("https://api.gec.org.mx/api/riegos/getFormEstaciones" + iduser3)
           comentario_general : $("#txtcomentarioestacion").val(),
             }
 
-            fetch('https://api.gec.org.mx/api/riegos/getFormEstaciones', {
+            fetch('http://localhost:3001/api/riegos/getFormEstaciones', {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: {
@@ -127,7 +126,7 @@ $.get("https://api.gec.org.mx/api/riegos/getFormEstaciones" + iduser3)
 
                 $.ajax({
                 method: "PUT",
-                url: "https://api.gec.org.mx/api/riegos/getFormEstaciones"+iduser3,
+                url: "http://localhost:3001/api/riegos/getFormEstaciones"+iduser3,
                 contentType: 'application/json',
                 data: JSON.stringify(data), // access in body
                 })
@@ -149,7 +148,7 @@ $.get("https://api.gec.org.mx/api/riegos/getFormEstaciones" + iduser3)
 $(document).on('click', '.eliminar-estaciones', function () {
     iduser3 = $(this).data("id");
 console.log(iduser2)
-    fetch('https://api.gec.org.mx/api/riegos/getFormEstaciones/'+iduser3+'', {
+    fetch('http://localhost:3001/api/riegos/getFormEstaciones/'+iduser3+'', {
         method: 'DELETE',
     })
     .then( resp => resp.json())

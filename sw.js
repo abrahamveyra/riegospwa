@@ -1,8 +1,7 @@
-
 //const CACHE_NAME = 'cache-1';
 importScripts('js/sw-utils.js')
 
-const CACHE_STATIC = 'static-v2';
+const CACHE_STATIC = 'static-v1';
 const CACHE_DYNAMIC = 'dynamic-v1';
 const CACHE_INMUTABLE = 'inmutable-v2';
 
@@ -31,19 +30,31 @@ self.addEventListener( 'install', e => {
     .then( cache => {
     
     return cache.addAll([
-        //'/',
+        '/',
         'index.html',
         'estilos/formularios.css',
         'imagenes/bac-imag.webp',
         'imagenes/ElCerezoOriginal.webp',
+        'imagenes/icons/icon-72x72.png',
+        'imagenes/icons/icon-96x96.png',
+        'imagenes/icons/icon-128x128.png',
+        'imagenes/icons/icon-144x144.png',
+        'imagenes/icons/icon-152x152.png',
+        'imagenes/icons/icon-192x192.png',
+        'imagenes/icons/icon-384x384.png',
+        'imagenes/icons/icon-512x512.png',
         'js/suelos.js',
         'js/ciclos.js',
         'js/estaciones.js',
         'js/app.js',
-        'https://api.gec.org.mx/api/riegos/getFormCiclos',
-        'https://api.gec.org.mx/api/riegos/getFormEstaciones',
-        'https://api.gec.org.mx/api/riegos/getFormSuelos',
-        'https://api.gec.org.mx/api/getCecos/'
+        'js/sw-utils.js',
+        //'https://api.gec.org.mx/api/riegos/getFormCiclos',
+        //'https://api.gec.org.mx/api/riegos/getFormEstaciones',
+        //'https://api.gec.org.mx/api/riegos/getFormSuelos',
+        'https://api.gec.org.mx/api/getCecos/',
+        'http://localhost:3001/api/riegos/getFormSuelos',
+        'http://localhost:3001/api/riegos/getFormCiclos',
+        'http://localhost:3001/api/riegos/getFormEstaciones'
        ]);
 
     });

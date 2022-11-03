@@ -1,14 +1,15 @@
-$(document).ready( () => obtenerciclo())
+
 
 let iduser2 = 0;
 var editar = false;
 
 obtenerciclo();
 function obtenerciclo(){
+    $(".table tbody").html(""); //limpia la tabla
 console.log()
 let i=0;
 
-fetch('https://api.gec.org.mx/api/riegos/getFormCiclos')
+fetch('http://localhost:3001/api/riegos/getFormCiclos')
 .then(resp => resp.json())
 .then(resp => {
     resp.forEach(element => {
@@ -47,7 +48,7 @@ $(document).on('click', '.editar', function () {
 
         function PintarUsuario(iduser2){
 
-$.get("https://api.gec.org.mx/api/riegos/getFormCiclos" + iduser2)
+$.get("http://localhost:3001/api/riegos/getFormCiclos" + iduser2)
 .done(function( response ) {
     
     $("#txtnombres").val(response.Name),
@@ -82,7 +83,7 @@ $.get("https://api.gec.org.mx/api/riegos/getFormCiclos" + iduser2)
           comentario_general : $("#txtcomentariociclo").val(),
             }
           
-            fetch('https://api.gec.org.mx/api/riegos/getFormCiclos', {
+            fetch('http://localhost:3001/api/riegos/getFormCiclos', {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: {
@@ -140,7 +141,7 @@ $.get("https://api.gec.org.mx/api/riegos/getFormCiclos" + iduser2)
                   comentario_general : $("#txtcomentario").val(),
             }
 
-            fetch('https://api.gec.org.mx/api/riegos/getFormCiclos', {
+            fetch('http://localhost:3001/api/riegos/getFormCiclos', {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: {
@@ -163,7 +164,7 @@ $.get("https://api.gec.org.mx/api/riegos/getFormCiclos" + iduser2)
     $(document).on('click', '.eliminar-ciclo', function () {
             iduser2 = $(this).data("id");
   console.log(iduser2)
-            fetch('https://api.gec.org.mx/api/riegos/getFormCiclos/'+iduser2+'', {
+            fetch('http://localhost:3001/api/riegos/getFormCiclos/'+iduser2+'', {
                 method: 'DELETE',
             })
             .then( resp => resp.json())
