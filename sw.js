@@ -1,36 +1,14 @@
-//const CACHE_NAME = 'cache-1';
-importScripts('js/sw-utils.js')
+// imports
+importScripts('js/sw-utils.js');
 
-const CACHE_STATIC = 'static-v1';
-const CACHE_DYNAMIC = 'dynamic-v1';
-const CACHE_INMUTABLE = 'inmutable-v2';
 
-function limpiarCache(cacheName, numeroItems){
+const STATIC_CACHE    = 'static-v1';
+const DYNAMIC_CACHE   = 'dynamic-v1';
+const INMUTABLE_CACHE = 'inmutable-v1';
 
-   caches.open( cacheName)
-   .then( cache => {
 
- return cache.keys()
-   .then( keys => {
-
-    if(keys.length > numeroItems){
-        cache.delete( keys[0] )
-        .then( limpiarCache(cacheName, numeroItems) )
-    }
-
-   })
-
-   })
-
-}
-
-self.addEventListener( 'install', e => {
-
-    const cacheprom = caches.open(CACHE_STATIC)
-    .then( cache => {
-    
-    return cache.addAll([
-        '/',
+const APP_SHELL = [
+         '/',
         'index.html',
         'estilos/formularios.css',
         'imagenes/bac-imag.webp',
@@ -48,70 +26,94 @@ self.addEventListener( 'install', e => {
         'js/estaciones.js',
         'js/app.js',
         'js/sw-utils.js',
-        //'https://api.gec.org.mx/api/riegos/getFormCiclos',
-        //'https://api.gec.org.mx/api/riegos/getFormEstaciones',
-        //'https://api.gec.org.mx/api/riegos/getFormSuelos',
-        'https://api.gec.org.mx/api/getCecos/',
-        'http://localhost:3001/api/riegos/getFormSuelos',
-        'http://localhost:3001/api/riegos/getFormCiclos',
-        'http://localhost:3001/api/riegos/getFormEstaciones'
-       ]);
+];
 
-    });
-
-    const cacheinmutable = caches.open(CACHE_INMUTABLE)
-    .then( cache => {
-       
-       return cache.addAll([
-            'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js',
+const APP_SHELL_INMUTABLE = [
+    'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js',
             '//cdn.jsdelivr.net/npm/sweetalert2@11',
             'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js',
             'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css',
             'https://cdn.jsdelivr.net/npm/pouchdb@7.3.0/dist/pouchdb.min.js'
-       ]);
+];
 
-    })
 
-    e.waitUntil(Promise.all([cacheinmutable, cacheprom]));
+
+self.addEventListener('install', e => {
+
+
+    const cacheStatic = caches.open( STATIC_CACHE ).then(cache => 
+        cache.addAll( APP_SHELL ));
+
+    const cacheInmutable = caches.open( INMUTABLE_CACHE ).then(cache => 
+        cache.addAll( APP_SHELL_INMUTABLE ));
+
+
+
+    e.waitUntil( Promise.all([ cacheStatic, cacheInmutable ])  );
+
 });
 
-//SI CAMBIA LA VERSION DEL CACHE HACER LA ELIMINACIÓN
+
 self.addEventListener('activate', e => {
 
-  const respuesta = caches.keys().then( keys => {
+    const respuesta = caches.keys().then( keys => {
 
-    keys.forEach(key => {
-        if (key  !== CACHE_STATIC && key.includes('static') ) {
-            return caches.delete(key)
-        }
+        keys.forEach( key => {
 
-        if (key  !== CACHE_DYNAMIC && key.includes('dynamic') ) {
-          return caches.delete(key)
-      }
-    })
-  } )
+            if (  key !== STATIC_CACHE && key.includes('static') ) {
+                return caches.delete(key);
+            }
+
+            if (  key !== DYNAMIC_CACHE && key.includes('dynamic') ) {
+                return caches.delete(key);
+            }
+
+        });
+
+    });
+
+    e.waitUntil( respuesta );
+
+});
 
 
-  e.waitUntil(respuesta)
-})
+
+
 
 self.addEventListener( 'fetch', e => {
 
- const respuesta = caches.match(e.request ).then( res => {
+    let respuesta;
+    if( e.request.url.includes('/api') ){
+        
+   respuesta = manejoApiMensajes(DYNAMIC_CACHE, e.request);
+    }else{
 
-if(res){
-    return res;
-}else{
+     respuesta = caches.match( e.request ).then( res => {
+
+            if ( res ) {
+                
+                actualizaCacheStatico( STATIC_CACHE, e.request, APP_SHELL_INMUTABLE );
+                return res;
+            } else {
     
-  return fetch(e.request).then( newRes => {
+                return fetch( e.request ).then( newRes => {
+    
+                    return actualizaCacheDinamico( DYNAMIC_CACHE, e.request, newRes );
+    
+                });
+    
+            }
+    
+        });
+    
+    }
 
-    return actaulizaCacheDinamico(CACHE_DYNAMIC, e.request, newRes)
 
-  })
-}
+    
 
-  })
 
-  e.respondWith( respuesta )
+    e.respondWith( respuesta );
 
-} )
+});
+
+

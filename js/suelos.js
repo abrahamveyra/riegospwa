@@ -162,7 +162,7 @@
     
     $(document).on('click', '.eliminar-suelo', function () {
         iduser= $(this).data("id");
-    console.log(iduser2)
+    console.log(iduser)
         fetch('http://localhost:3001/api/riegos/getFormSuelos/'+iduser+'', {
             method: 'DELETE',
         })
@@ -444,7 +444,7 @@
 
    function sueloform(todos, id_suelo) {
     todos.forEach(function(todo) {
-      console.log("fecha--editar: ",id_suelo)
+      console.log("cllave-subir: ",id_suelo)
       if (id_suelo == todo.doc._id) {
       var data = {
         fecha : todo.doc.fecha,
