@@ -3,6 +3,7 @@
 
     let iduser = 0;
     var editar = false;
+    let prueba = ""
     
     obtener();
     function obtener(){
